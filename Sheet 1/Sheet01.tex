@@ -10,6 +10,7 @@
 
 % Mathesymbole und Ähnliches
 \usepackage{amsthm}
+\newtheorem{proposition}{Proposition}[section]
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -124,7 +125,7 @@
 
 % <-------- HIER beginnt die Lösung ========================
 
-\section*{Aufgabe \printsheet.1}
+\section*{Aufgabe \printsheet.1} \setcounter{section}{1}
 Let $N=(S,T,W)$ be a Petri net with connectivity matrix $\C$ and $M_1,M_2 \in \N^{|S|}, \sigma = t_i \dots t_m \in T^*$ such that $M_1 [ \sigma \rangle M_2$. To prove: $M_2 = M_1 + \C \cdot \psi(\sigma)$ \\
 
 \begin{proof}
@@ -137,22 +138,40 @@ and therefore according to the definition of the firing relation:
 Thus the proposition is proven. \end{proof}
 
 
-\section*{Aufgabe \printsheet.2}
+\section*{Aufgabe \printsheet.2} \setcounter{section}{2}
 
 
 
-\section*{Aufgabe \printsheet.3}
+\section*{Aufgabe \printsheet.3} \setcounter{section}{3}
 \subsection*{(a)}
-Let $(N,M_0,M_f)$ be a petri-net with $N = (S,T,W)$.
+Let $(N,M_0,M_f)$ be a petri-net with $N = (S,T,W)$. We construct a VASS $A=(Q,\Delta,q_0,v_0)$ in which the final configuration $(q_f,v_f)$ is reachable from $(q_0,v_0)$ if and only if $M_f$ is reachable from $M_0$ in $N$.
+\begin{itemize}
+\item $Q = \{q\}$
+\item $q_0 = q$
+\item $v_0 = M_0 = \myvec{M_0 (s_1)& \dots & M_0(s_d)}^T$
+\item $\Delta = \{\forall t_h \in T: (q,a^h,q)\}$ where $a^h = \myvec{a_1^h& \dots &a_d^h}^T \in \Z^d$ is defined as:
+\[a_i^h = W(t_h,s_i) - W(s_i,t_h)\]
+\end{itemize}
+The initial state is defined as $(q,M_0)$ and the final state is defined as $(q_f,v_f) = (q,M_f)$.
 
+\begin{proposition}
+$(q,M_f)$ is reachable from $(q,M_0)$ ($(q,M_f) \in Reach((q,M_0))$) if and only if $M_f$ is reachable from $M_0$ in $N$ ($M_f \in Reach(M_0)$).
+\end{proposition}
 
 \begin{proof}
-
+\begin{eqnarray*}
+M_f \in Reach(M_0) &\Leftrightarrow & \exists \sigma = t_b,\dots ,t_m: M_0 [\sigma \rangle M_f \\
+&\Leftrightarrow & M_f = M_0 + W(t_b,-) - W(-,t_b) + \dots + W(t_m,-) - W(-,t_m) \\
+&\Leftrightarrow & M_f = M_0 + a^b + \dots + a^m \quad \mid \text{since }a_i^h = W(t_h,s_i) - W(s_i,t_h)\\
+&\Leftrightarrow & v_f = v_0 + a^b + \dots + a^m \\
+&\Leftrightarrow & (q_0,v_0) \in Reach(q_f,v_f) \quad \mid \text{since the state never changes} 
+\end{eqnarray*}
 \end{proof}
 
 \subsection*{(b)}
-Let $A=(Q,\Delta,q_0,v_0)$ be a VASS of dimension $d \in \N$. We construct an equivalent petri-net as follows: \\
-$N=(S,T,W)$ with
+Let $A=(Q,\Delta,q_0,v_0)$ be a VASS of dimension $d \in \N$. We construct a petri net $(N,M_0,M_f)$ with $(q_f,v_f) \in Reach((q_0,v_0))$ if and only if $M_f \in Reach(M_0)$ as follows: \\
+
+Let $N$ be $(S,T,W)$ with:
 \begin{itemize}
 \item $S = \{s_1, \dots s_d, s_q\}$
 \item $T = \{t_\delta \mid \forall \delta \in \Delta\}$
@@ -171,7 +190,10 @@ The weight function $W:(S\times T) \cup (T\times S) \rightarrow \N$ is defined f
 
 
 The initial marking is $M_0 = \myvec{v_{0_1} & \dots & v_{0_d} & 0}^T$ and the final marking $M_f = \myvec{v_{f_1} & \dots & v_{f_d} & m}^T$ where $q_m = q_f$.
-This petri net is equivalent to the VASS.
+\begin{proposition}
+$(q,M_f)$ is reachable from $(q,M_0)$ ($(q,M_f) \in Reach((q,M_0))$) if and only if $M_f$ is reachable from $M_0$ in $N$ ($M_f \in Reach(M_0)$).
+\end{proposition}
+
 
 \begin{proof}
 Let $\delta = (q_i,a,q_j)$ be a transition in the VASS with $v$ being the counter assignment before the transition and $(v+a)$ the assignment after the transition. In the formed petri net, the transition $t_\delta$ should have the same effect as $\delta$ in the VASS, meaning, the marking before the transition should be $M_i = \myvec{v_1 & \dots & v_d & i}^T$ and after the transition it should be $M_j = \myvec{v_1+a_1 & \dots v_d+a_d & j}^T$.
