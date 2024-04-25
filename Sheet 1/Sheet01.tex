@@ -142,7 +142,59 @@ Thus the proposition is proven. \end{proof}
 
 
 \section*{Aufgabe \printsheet.3}
+\subsection*{(a)}
+Let $(N,M_0,M_f)$ be a petri-net with $N = (S,T,W)$.
 
+
+\begin{proof}
+
+\end{proof}
+
+\subsection*{(b)}
+Let $A=(Q,\Delta,q_0,v_0)$ be a VASS of dimension $d \in \N$. We construct an equivalent petri-net as follows: \\
+$N=(S,T,W)$ with
+\begin{itemize}
+\item $S = \{s_1, \dots s_d, s_q\}$
+\item $T = \{t_\delta \mid \forall \delta \in \Delta\}$
+\end{itemize}
+
+The weight function $W:(S\times T) \cup (T\times S) \rightarrow \N$ is defined for any $\delta = (q_k,a,q_l) \in \Delta:$ \\ \[W(s_i,t_\delta)= \begin{cases}
+ -a_i & \text{if } a_i < 0 \\
+ 0 & \text{otherwise}
+ \end{cases},
+ \quad W(t_\delta,s_i) = \begin{cases}
+ a_i & \text{if } a_i >0 \\
+ 0 & \text{otherwise}
+ \end{cases}\] and \\
+ \[ W(t_\delta, s_q) =\begin{cases} (l-k)  & \text{if } l > k \\ 0 & \text{otherwise} \end{cases},
+\quad W(s_q,t_\delta) = \begin{cases} (k-l)& \text{if } k>l\\ 0& \text{otherwise} \end{cases}\]
+
+
+The initial marking is $M_0 = \myvec{v_{0_1} & \dots & v_{0_d} & 0}^T$ and the final marking $M_f = \myvec{v_{f_1} & \dots & v_{f_d} & m}^T$ where $q_m = q_f$.
+This petri net is equivalent to the VASS.
+
+\begin{proof}
+Let $\delta = (q_i,a,q_j)$ be a transition in the VASS with $v$ being the counter assignment before the transition and $(v+a)$ the assignment after the transition. In the formed petri net, the transition $t_\delta$ should have the same effect as $\delta$ in the VASS, meaning, the marking before the transition should be $M_i = \myvec{v_1 & \dots & v_d & i}^T$ and after the transition it should be $M_j = \myvec{v_1+a_1 & \dots v_d+a_d & j}^T$.
+
+First we prove, that $M_j(s_q) = j$ if $M_i(s_q) = i$. For this we need to inspect two cases: \\
+
+1. If $i < j$, then $j-i > 0$. Therefore there exists a weight $W(t_\delta,s_q) = j-i$. Therefore, if $t_\delta$ is triggered, it adds $(j-i)$ tokens to $s_q$. Since $i + (j - i) = j$, $s_q$ has $j$ tokens in marking $M_j$.
+
+2. If $i > j$, then $j-i < 0$. Therefore there exists a weight $W(t_\delta,s_q) = i-j$. Therefore, if $t_\delta$ is triggered, it takes $(i-j)$ tokens from $s_q$. Since $i - (i - j) = i-i+j = j$, $s_q$ has $j$ tokens in marking $M_j$.
+
+Now, we show the equivalence of the transitions at all other places. \\
+\begin{eqnarray*}
+&& \delta = (q_i,a,q_j) \in \Delta \land v \in \N^d \text{ assignment before transition} \\ 
+&\Leftrightarrow & t_\delta \in T \land \forall a_i > 0: W(t_\delta,s_i) = a_i \land \forall a_i < 0: W(s_i,t_\delta) = -a_i \\
+&\Leftrightarrow & M_j(s_1 ,\dots,s_d) = M_i(s_1,\dots,s_d) + W(t_\delta,s_1,\dots,s_d) - W(s_1,\dots,s_d,t_\delta) \\
+&\Leftrightarrow & \forall k \in \{1,...,d\}: M_j(s_k) = M_i(s_k) + W(t_\delta,s_k) - W(s_k,t_\delta) = v_k + a_k \\
+&\Leftrightarrow & M_j = \myvec{v_1+a_1 & \dots & v_d+a_d & j} 
+\end{eqnarray*}
+
+Since this shows that any transition $\delta$ can be replicated by $t_\delta$ in the petri net, if there exists a sequence of transitions $\delta_1,\dots, \delta_m$ with $(q_0,v_0) \overset{\delta_1}{\rightarrow} \dots \overset{\delta_m}{\rightarrow} (q_f,v_f)$, there has to be a sequence $\sigma = t_{\delta_1} \dots t_{\delta_m}$ with $M_0 [\sigma \rangle M_f$ and the other way around.
+\end{proof}
+
+\subsection*{(c)}
 
 
 \section*{Aufgabe \printsheet.4}
