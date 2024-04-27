@@ -10,7 +10,6 @@
 
 % Mathesymbole und Ähnliches
 \usepackage{amsthm}
-\newtheorem{proposition}{Proposition}[section]
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -66,10 +65,9 @@
 \renewcommand{\labelenumi}{(\roman{enumi})}
 
 % BITTE NICHT ÄNDERN: interne Kommandos für die Informationen (Blattnummer, Gruppe, ...)
-\newcommand{\printsheet}{?}
-\newcommand{\sheet}[1]{%
-\renewcommand{\printsheet}{#1}%
-}
+\newcounter{sheet}
+\newcommand{\printsheet}{\arabic{sheet}}
+
 
 \newcommand{\printgroup}{?}
 \newcommand{\group}[1]{%
@@ -78,6 +76,8 @@
 
 \newcommand{\printmembers}{}
 \newcommand{\printmember}[3]{{#2} {#3} & {#1} \\}
+
+\newtheorem{proposition}{Proposition}[sheet]
 
 % Für Vektoren
 \newcommand{\myvec}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
@@ -99,11 +99,11 @@
 }}
 
 % <-------- HIER alle Informationen eintragen ========================
-\sheet{1} % Nummer des Blatts
+\setcounter{sheet}{1} % Nummer des Blatts
 
 % alle Gruppenmitglieder in der Form \member{Matrikelnummer}{Vorname}{Nachname}
 \member{5481114}{Danje}{Petersen}
-\member{1234567}{Marc}{Y}
+\member{1234567}{Marc}{Nachname}
 
 \begin{document}
 
@@ -133,17 +133,19 @@ Let $N=(S,T,W)$ be a Petri net with connectivity matrix $\C$ and $M_1,M_2 \in \N
 From the definition of the connectivity matrix it follows that: 
 \[\C = \left( W(t_1, -) - W(-,t_1) \dots W(t_{|T|}, -) - W(-, t_{|T|}) \right)\]
 Thus the term $\C \cdot \psi(\sigma)$ results in
-\[\C \cdot \psi(\sigma) = \left( W(t_i,-) - W(-,t_i) + \dots + W(t_m,-) - W(-,t_m) \right)\]
+\[\C \cdot \psi(\sigma) = \left( (\psi(\sigma))(t_1) \cdot (W(t_1,-) - W(-,t_1)) + \dots + (\psi(\sigma))(t_{|T|}) \cdot (W(t_{|T|},-) - W(-,t_{|T|})) \right)\]
+which is equal to 
+\[\left( W(t_i,-) - W(-,t_i) + \dots + W(t_m,-) - W(-,t_m) \right)\]
 and therefore according to the definition of the firing relation:
 \[M_1 [\sigma \rangle M_2 = M_1 + W(t_i,-) - W(-,t_i) + \dots + W(t_m,-) - W(-,t_m) = M_1 + \C \cdot \psi(\sigma)\]
 Thus the proposition is proven. \end{proof}
 
 
-\section*{Aufgabe \printsheet.2} \setcounter{section}{2}
+\section*{Aufgabe \printsheet.2} 
 
 
 \pagebreak
-\section*{Aufgabe \printsheet.3} \setcounter{section}{3}
+\section*{Aufgabe \printsheet.3} 
 \subsection*{(a)}
 Let $(N,M_0,M_f)$ be a Petri-net with $N = (S,T,W)$. We construct a VASS $A=(Q,\Delta,q_0,v_0)$ in which the final configuration $(q_f,v_f)$ is reachable from $(q_0,v_0)$ if and only if $M_f$ is reachable from $M_0$ in $N$.
 \begin{itemize}
@@ -234,13 +236,43 @@ The final configuration of $A$ is $(q_f=q_0,v_f=M_f)$.
 (q_f,v_f) \in Reach((q_0,v_0)) &\Leftrightarrow & (q_0,M_f) \in Reach((q_0,M_0)) \\
 &\Leftrightarrow & \exists \delta_b \dots \delta_m : q_0 \overset{a^b}{\rightarrow} \dots \overset{a^m}{\rightarrow} q_0 \\
 &\Leftrightarrow & \exists a^b \dots a^m: M_f = M_0 + a^b + \dots a^m \\
-&\Leftrightarrow & \exists t_b, \dots, t_m: M_f = M_0 + (W(t_b,-)-W(-,t_b)) + \dots + (W(t_m,-)-W(-,t_m)) \\
+&\Leftrightarrow & \exists t_b, \dots, t_m: M_f = M_0 + (W(t_b,-)-W(-,t_b)) + \\ && \dots + (W(t_m,-)-W(-,t_m)) \\
 &\Leftrightarrow & \exists \sigma = t_b \dots t_m : M_0 [\sigma \rangle M_f \\
 &\Leftrightarrow & M_f \in Reach(M_0)
 \end{eqnarray*}
 \end{proof}
 
 \section*{Aufgabe \printsheet.4} \setcounter{section}{4}
+\subsection*{(a)}
+First we show that a product $(A\times B, \leq)$ of two wqos $(A,\leq_A)$, $(B,\leq_B)$ is a wqo itself.\\
+
+\begin{proposition}
+For two wqo $(A,\leq_A)$, $(B,\leq_B)$ the product $(A\times B, \leq)$ with $(a,b) \leq (a',b') \Leftrightarrow a \leq_A a' \land b \leq_B b'$ is a well-quasi ordering.
+\end{proposition}
+\begin{proof}
+A well-quasi ordering is reflexive, transitive and has atleast two comparable elements for each infinite sequence. \\
+\textbf{Reflexive:} \\
+\begin{eqnarray*}
+\forall a \in A: a \leq_A a \land \forall b \in B: b \leq_B b &\Leftrightarrow & \forall a \in A, b \in B: a \leq_A a \land b \leq_B b \\
+&\Leftrightarrow & \forall(a,b) \in (A\times B): (a,b) \leq (a,b)  
+\end{eqnarray*} \\
+\textbf{Transitive:} \\
+Since $(A,\leq_A)$ and $(B,\leq_B)$ are wqo they are transitive and therefore
+\[\forall a,a',a^* \in A: (a \leq_A a') \land (a' \leq_A a^*) \Rightarrow a \leq_A a^*\] and \[\forall b,b',b^* \in B: (b \leq_B b') \land (b' \leq_B b^*) \Rightarrow b \leq_B b^*. \]
+So for all $(a,b),(a',b'),(a^*,b^*)$ with $(a,b) \leq (a',b')$ and $(a',b') \leq (a^*,b^*)$ it is true that 
+\[a \leq_A a' \land a' \leq_A a^* \land b \leq b' \land b'\]
+and therefore $a \leq_A a^* \land b \leq_B b^*$ which is equivalent to $(a,b) \leq (a^*,b^*)$. \\
+
+\textbf{Infinite sequence:} \\
+For every infinite sequence $(a_i)_{i\in \N}$ in $A$ there are indices $i < j$ with $a_i \leq_A a_j$.
+For every infinite sequence $(b_i)_{i\in \N}$ in $B$ there are indices $k < l$ with $b_k \leq_B b_l$.
+Since every infinite sequence $((a,b)_i)_{i \in \N}$ is a product of two infinite sequences $(a_i)_{i\in \N}$ and $(b_i)_{i\in \N}$, we know that there are indices $i < j$ with $a_i \leq_A a_j$ and $k < l$ with $b_k \leq_B b_l$. Therefore in every infinite sequence $((a,b)_i)_{i\in \N}$ in $(A\times B, \leq)$ there are elements $(a,b)_{i^*} = (a_i,b_k)$, $(a,b)_{j^*} = (a_j,b_l)$ who have indices $i^* < j^*$ and which fulfil $(a,b)_{i^*} \leq (a,b)_{j^*}$.
+
+Since the product of two wqo is also a wqo and $(\N,\leq)$ is obviously an wqo, the product of $d \in \N$ well-quasi orderings $(\N^d,\leq_d)$ is a well-quasi ordering too.   
+\end{proof}
+
+
+\subsection*{(b)}
 
 
 
