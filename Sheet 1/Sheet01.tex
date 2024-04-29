@@ -273,8 +273,17 @@ Since the product of two wqo is also a wqo and $(\N,\leq)$ is obviously an wqo, 
 
 
 \subsection*{(b)}
+\begin{proposition}
+The search tree explored in the algorithm that constructs the coverability graph is finite.
+\end{proposition}
+\begin{proof}
+Let $Cov(N)= (V,E,M_0)$ be an infinite coverability graph. Then there must be an infinite path $\Phi = M_1M_2 \dots$ on $Cov(N)$ with pairwise unequal elements. For an infinite path, a marking $M_k$ exists after which no $\omega$ replaces a natural number. 
+Let $\Phi' = \phi_{1} \phi_{2} \dots$ be the infinite sequence of markings that include only the places that have not been set to $\omega$, starting from $M_k$. 
+\[\phi_1 = \zeta(M_{k+1}) = (M_{s_i} \dots M_{s_{i'}})^T \text{ where } M_{s_i} \neq \omega\]
+Since $\Phi'$ is an infinite sequence of tuples of natural numbers, Dickson's lemma can be applied.
+According to Dickson's lemma, $\Phi'$ includes two elements $\phi_i \leq_\omega \phi_j$ with $i < j$. Because $\Phi$ includes only unique markings, it holds that $\phi_i(s) < \phi_j(s)$ for some place $s \in S$. The algorithm defining the coverability graph would then place a $\omega$ at marking $s$. This contradicts the assumption that no $\omega$ is added after $M_k$. With that no such infinite sequence can exists and furthermore no infinite coverability graph can exist.
 
-
+\end{proof}
 
 
 
