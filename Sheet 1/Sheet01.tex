@@ -103,7 +103,7 @@
 
 % alle Gruppenmitglieder in der Form \member{Matrikelnummer}{Vorname}{Nachname}
 \member{5481114}{Danje}{Petersen}
-\member{1234567}{Marc}{Nachname}
+\member{5174511}{Marc}{Majohr}
 
 \begin{document}
 
@@ -142,6 +142,8 @@ Thus the proposition is proven. \end{proof}
 
 
 \section*{Aufgabe \printsheet.2} 
+\includegraphics[scale=0.75]{2.png}
+\includepdf[pages=2]{concurrency 1}
 
 
 \pagebreak
@@ -149,11 +151,11 @@ Thus the proposition is proven. \end{proof}
 \subsection*{(a)}
 Let $(N,M_0,M_f)$ be a Petri-net with $N = (S,T,W)$. We construct a VASS $A=(Q,\Delta,q_0,v_0)$ in which the final configuration $(q_f,v_f)$ is reachable from $(q_0,v_0)$ if and only if $M_f$ is reachable from $M_0$ in $N$.
 \begin{itemize}
-\item $Q = \{q\}$
+\item $Q = \{q,q_t\}$
 \item $q_0 = q$
 \item $v_0 = M_0 = \myvec{M_0 (s_1)& \dots & M_0(s_d)}^T$
-\item $\Delta = \{\forall t_h \in T: (q,a^h,q)\}$ where $a^h = \myvec{a_1^h& \dots &a_d^h}^T \in \Z^d$ is defined as:
-\[a_i^h = W(t_h,s_i) - W(s_i,t_h)\]
+\item $\Delta = \{\forall t_h \in T: (q,neg(a^h),q_t), (q_t,pos(a^h),q)\}$ where $a^h = \myvec{a_1^h& \dots &a_d^h}^T \in \Z^d$ is defined as:
+\[a_i^h = neg(a_i^h) + pos(a_i^h) = -W(s_i,t_h) + W(t_h,s_i)\]
 \end{itemize}
 The initial state is defined as $(q,M_0)$ and the final state is defined as $(q_f,v_f) = (q,M_f)$.
 
@@ -165,82 +167,84 @@ $(q,M_f)$ is reachable from $(q,M_0)$ ($(q,M_f) \in Reach((q,M_0))$) if and only
 \begin{eqnarray*}
 M_f \in Reach(M_0) &\Leftrightarrow & \exists \sigma = t_b,\dots ,t_m: M_0 [\sigma \rangle M_f \\
 &\Leftrightarrow & M_f = M_0 + W(t_b,-) - W(-,t_b) + \dots + W(t_m,-) - W(-,t_m) \\
-&\Leftrightarrow & M_f = M_0 + a^b + \dots + a^m \quad \mid \text{since }a_i^h = W(t_h,s_i) - W(s_i,t_h)\\
+&\Leftrightarrow & M_f = M_0 + pos(a^b) + neg(a^b) \dots + pos(a^m) + neg(a^b) \\
 &\Leftrightarrow & v_f = v_0 + a^b + \dots + a^m \\
 &\Leftrightarrow & (q_0,v_0) \in Reach(q_f,v_f) \quad \mid \text{since the state never changes} 
 \end{eqnarray*}
 \end{proof}
 
 \subsection*{(b)}
-Let $A=(Q,\Delta,q_0,v_0)$ be a VASS of dimension $d \in \N$. We construct a Petri net $(N,M_0,M_f)$ with $(q_f,v_f) \in Reach((q_0,v_0))$ if and only if $M_f \in Reach(M_0)$ as follows: \\
-
-Let $N$ be $(S,T,W)$ with:
-\begin{itemize}
-\item $S = \{s_1, \dots s_d, s_q\}$
-\item $T = \{t_\delta \mid \forall \delta \in \Delta\}$
-\end{itemize}
-
-The weight function $W:(S\times T) \cup (T\times S) \rightarrow \N$ is defined for any $\delta = (q_k,a,q_l) \in \Delta:$ \\ \[W(s_i,t_\delta)= \begin{cases}
- -a_i & \text{if } a_i < 0 \\
- 0 & \text{otherwise}
- \end{cases},
- \quad W(t_\delta,s_i) = \begin{cases}
- a_i & \text{if } a_i >0 \\
- 0 & \text{otherwise}
- \end{cases}\] and \\
- \[ W(t_\delta, s_q) =\begin{cases} (l-k)  & \text{if } l > k \\ 0 & \text{otherwise} \end{cases},
-\quad W(s_q,t_\delta) = \begin{cases} (k-l)& \text{if } k>l\\ 0& \text{otherwise} \end{cases}\]
-
-
-The initial marking is $M_0 = \myvec{v_{0_1} & \dots & v_{0_d} & 0}^T$ and the final marking $M_f = \myvec{v_{f_1} & \dots & v_{f_d} & m}^T$ where $q_m = q_f$.
-\begin{proposition}
-$(q,M_f)$ is reachable from $(q,M_0)$ ($(q,M_f) \in Reach((q,M_0))$) if and only if $M_f$ is reachable from $M_0$ in $N$ ($M_f \in Reach(M_0)$).
-\end{proposition}
-
-
-\begin{proof}
-Let $\delta = (q_i,a,q_j)$ be a transition in the VASS with $v$ being the counter assignment before the transition and $(v+a)$ the assignment after the transition. In the formed Petri net, the transition $t_\delta$ should have the same effect as $\delta$ in the VASS, meaning, the marking before the transition should be $M_i = \myvec{v_1 & \dots & v_d & i}^T$ and after the transition it should be $M_j = \myvec{v_1+a_1 & \dots v_d+a_d & j}^T$.
-
-First we prove, that $M_j(s_q) = j$ if $M_i(s_q) = i$. For this we need to inspect two cases: \\
-
-1. If $i < j$, then $j-i > 0$. Therefore there exists a weight $W(t_\delta,s_q) = j-i$. Therefore, if $t_\delta$ is triggered, it adds $(j-i)$ tokens to $s_q$. Since $i + (j - i) = j$, $s_q$ has $j$ tokens in marking $M_j$.
-
-2. If $i > j$, then $j-i < 0$. Therefore there exists a weight $W(t_\delta,s_q) = i-j$. Therefore, if $t_\delta$ is triggered, it takes $(i-j)$ tokens from $s_q$. Since $i - (i - j) = i-i+j = j$, $s_q$ has $j$ tokens in marking $M_j$.
-
-Now, we show the equivalence of the transitions at all other places. \\
-\begin{eqnarray*}
-&& \delta = (q_i,a,q_j) \in \Delta \land v \in \N^d \text{ assignment before transition} \\ 
-&\Leftrightarrow & t_\delta \in T \land \forall a_i > 0: W(t_\delta,s_i) = a_i \land \forall a_i < 0: W(s_i,t_\delta) = -a_i \\
-&\Leftrightarrow & M_j(s_1 ,\dots,s_d) = M_i(s_1,\dots,s_d) + W(t_\delta,s_1,\dots,s_d) - W(s_1,\dots,s_d,t_\delta) \\
-&\Leftrightarrow & \forall k \in \{1,...,d\}: M_j(s_k) = M_i(s_k) + W(t_\delta,s_k) - W(s_k,t_\delta) = v_k + a_k \\
-&\Leftrightarrow & M_j = \myvec{v_1+a_1 & \dots & v_d+a_d & j} 
-\end{eqnarray*}
-
-Since this shows that any transition $\delta$ can be replicated by $t_\delta$ in the Petri net, if there exists a sequence of transitions $\delta_1,\dots, \delta_m$ with $q_0 \overset{a^1}{\rightarrow} \dots \overset{a^m}{\rightarrow} q_f$ and $v_f = v_0 + a^l + \dots a^m$, there has to be a sequence $\sigma = t_{\delta_1} \dots t_{\delta_m}$ with $M_0 [\sigma \rangle M_f$ and the other way around.
-\end{proof}
+\includegraphics[scale=1]{3b.png}
+%Let $A=(Q,\Delta,q_0,v_0)$ be a VASS of dimension $d \in \N$. We construct a Petri net $(N,M_0,M_f)$ with $(q_f,v_f) \in Reach((q_0,v_0))$ if and only if $M_f \in Reach(M_0)$ as follows: \\
+%
+%Let $N$ be $(S,T,W)$ with:
+%\begin{itemize}
+%\item $S = \{s_1, \dots s_d, s_q\}$
+%\item $T = \{t_\delta \mid \forall \delta \in \Delta\}$
+%\end{itemize}
+%
+%The weight function $W:(S\times T) \cup (T\times S) \rightarrow \N$ is defined for any $\delta = (q_k,a,q_l) \in \Delta:$ \\ \[W(s_i,t_\delta)= \begin{cases}
+% -a_i & \text{if } a_i < 0 \\
+% 0 & \text{otherwise}
+% \end{cases},
+% \quad W(t_\delta,s_i) = \begin{cases}
+% a_i & \text{if } a_i >0 \\
+% 0 & \text{otherwise}
+% \end{cases}\] and \\
+% \[ W(t_\delta, s_q) =\begin{cases} (l-k)  & \text{if } l > k \\ 0 & \text{otherwise} \end{cases},
+%\quad W(s_q,t_\delta) = \begin{cases} (k-l)& \text{if } k>l\\ 0& \text{otherwise} \end{cases}\]
+%
+%
+%The initial marking is $M_0 = \myvec{v_{0_1} & \dots & v_{0_d} & 0}^T$ and the final marking $M_f = \myvec{v_{f_1} & \dots & v_{f_d} & m}^T$ where $q_m = q_f$.
+%\begin{proposition}
+%$(q,M_f)$ is reachable from $(q,M_0)$ ($(q,M_f) \in Reach((q,M_0))$) if and only if $M_f$ is reachable from $M_0$ in $N$ ($M_f \in Reach(M_0)$).
+%\end{proposition}
+%
+%
+%\begin{proof}
+%Let $\delta = (q_i,a,q_j)$ be a transition in the VASS with $v$ being the counter assignment before the transition and $(v+a)$ the assignment after the transition. In the formed Petri net, the transition $t_\delta$ should have the same effect as $\delta$ in the VASS, meaning, the marking before the transition should be $M_i = \myvec{v_1 & \dots & v_d & i}^T$ and after the transition it should be $M_j = \myvec{v_1+a_1 & \dots v_d+a_d & j}^T$.
+%
+%First we prove, that $M_j(s_q) = j$ if $M_i(s_q) = i$. For this we need to inspect two cases: \\
+%
+%1. If $i < j$, then $j-i > 0$. Therefore there exists a weight $W(t_\delta,s_q) = j-i$. Therefore, if $t_\delta$ is triggered, it adds $(j-i)$ tokens to $s_q$. Since $i + (j - i) = j$, $s_q$ has $j$ tokens in marking $M_j$.
+%
+%2. If $i > j$, then $j-i < 0$. Therefore there exists a weight $W(t_\delta,s_q) = i-j$. Therefore, if $t_\delta$ is triggered, it takes $(i-j)$ tokens from $s_q$. Since $i - (i - j) = i-i+j = j$, $s_q$ has $j$ tokens in marking $M_j$.
+%
+%Now, we show the equivalence of the transitions at all other places. \\
+%\begin{eqnarray*}
+%&& \delta = (q_i,a,q_j) \in \Delta \land v \in \N^d \text{ assignment before transition} \\ 
+%&\Leftrightarrow & t_\delta \in T \land \forall a_i > 0: W(t_\delta,s_i) = a_i \land \forall a_i < 0: W(s_i,t_\delta) = -a_i \\
+%&\Leftrightarrow & M_j(s_1 ,\dots,s_d) = M_i(s_1,\dots,s_d) + W(t_\delta,s_1,\dots,s_d) - W(s_1,\dots,s_d,t_\delta) \\
+%&\Leftrightarrow & \forall k \in \{1,...,d\}: M_j(s_k) = M_i(s_k) + W(t_\delta,s_k) - W(s_k,t_\delta) = v_k + a_k \\
+%&\Leftrightarrow & M_j = \myvec{v_1+a_1 & \dots & v_d+a_d & j} 
+%\end{eqnarray*}
+%
+%Since this shows that any transition $\delta$ can be replicated by $t_\delta$ in the Petri net, if there exists a sequence of transitions $\delta_1,\dots, \delta_m$ with $q_0 \overset{a^1}{\rightarrow} \dots \overset{a^m}{\rightarrow} q_f$ and $v_f = v_0 + a^l + \dots a^m$, there has to be a sequence $\sigma = t_{\delta_1} \dots t_{\delta_m}$ with $M_0 [\sigma \rangle M_f$ and the other way around.
+%\end{proof}
 
 \subsection*{(c)}
-Be $(N=(S,T,W),M_0,M_f)$ a Petri net. We construct a VAS $A=(Q,\Delta,q_0,v_0)$ and a final configuration $(q_f,v_f)$ where $(q_f,v_f) \in Reach((q_0,v_0))$ if and only if $M_f \in Reach(M_0)$.
-\begin{itemize}
-\item $Q = \{q_0\}$ 
-\item $\Delta = \{\forall t_h \in T: (q,a^h,q)$ where $a^h = \myvec{a_1^h& \dots &a_d^h}^T \in \Z^d$ is defined as:
-\[a_i^h = W(t_h,s_i) - W(s_i,t_h)\}\]
-\item $q_0 = q_0$ 
-\item $v_0 = M_0$
-\end{itemize}
-The final configuration of $A$ is $(q_f=q_0,v_f=M_f)$.
-\begin{proposition} $M_f \in Reach(M_0)$ if and only if $(q_f,v_f) \in Reach((q_0,v_0))$ \end{proposition}
-
-\begin{proof}
-\begin{eqnarray*}
-(q_f,v_f) \in Reach((q_0,v_0)) &\Leftrightarrow & (q_0,M_f) \in Reach((q_0,M_0)) \\
-&\Leftrightarrow & \exists \delta_b \dots \delta_m : q_0 \overset{a^b}{\rightarrow} \dots \overset{a^m}{\rightarrow} q_0 \\
-&\Leftrightarrow & \exists a^b \dots a^m: M_f = M_0 + a^b + \dots a^m \\
-&\Leftrightarrow & \exists t_b, \dots, t_m: M_f = M_0 + (W(t_b,-)-W(-,t_b)) + \\ && \dots + (W(t_m,-)-W(-,t_m)) \\
-&\Leftrightarrow & \exists \sigma = t_b \dots t_m : M_0 [\sigma \rangle M_f \\
-&\Leftrightarrow & M_f \in Reach(M_0)
-\end{eqnarray*}
-\end{proof}
+\includegraphics[scale=1]{3c.png}
+%Be $(N=(S,T,W),M_0,M_f)$ a Petri net. We construct a VAS $A=(Q,\Delta,q_0,v_0)$ and a final configuration $(q_f,v_f)$ where $(q_f,v_f) \in Reach((q_0,v_0))$ if and only if $M_f \in Reach(M_0)$.
+%\begin{itemize}
+%\item $Q = \{q_0\}$ 
+%\item $\Delta = \{\forall t_h \in T: (q,a^h,q)$ where $a^h = \myvec{a_1^h& \dots &a_d^h}^T \in \Z^d$ is defined as:
+%\[a_i^h = W(t_h,s_i) - W(s_i,t_h)\}\]
+%\item $q_0 = q_0$ 
+%\item $v_0 = M_0$
+%\end{itemize}
+%The final configuration of $A$ is $(q_f=q_0,v_f=M_f)$.
+%\begin{proposition} $M_f \in Reach(M_0)$ if and only if $(q_f,v_f) \in Reach((q_0,v_0))$ \end{proposition}
+%
+%\begin{proof}
+%\begin{eqnarray*}
+%(q_f,v_f) \in Reach((q_0,v_0)) &\Leftrightarrow & (q_0,M_f) \in Reach((q_0,M_0)) \\
+%&\Leftrightarrow & \exists \delta_b \dots \delta_m : q_0 \overset{a^b}{\rightarrow} \dots \overset{a^m}{\rightarrow} q_0 \\
+%&\Leftrightarrow & \exists a^b \dots a^m: M_f = M_0 + a^b + \dots a^m \\
+%&\Leftrightarrow & \exists t_b, \dots, t_m: M_f = M_0 + (W(t_b,-)-W(-,t_b)) + \\ && \dots + (W(t_m,-)-W(-,t_m)) \\
+%&\Leftrightarrow & \exists \sigma = t_b \dots t_m : M_0 [\sigma \rangle M_f \\
+%&\Leftrightarrow & M_f \in Reach(M_0)
+%\end{eqnarray*}
+%\end{proof}
 
 \section*{Aufgabe \printsheet.4} \setcounter{section}{4}
 \subsection*{(a)}
@@ -265,8 +269,9 @@ and therefore $a \leq_A a^* \land b \leq_B b^*$ which is equivalent to $(a,b) \l
 
 \textbf{Infinite sequence:} \\
 For every infinite sequence $(a_i)_{i\in \N}$ in $A$ there are indices $i < j$ with $a_i \leq_A a_j$.
-For every infinite sequence $(b_i)_{i\in \N}$ in $B$ there are indices $k < l$ with $b_k \leq_B b_l$.
-Since every infinite sequence $((a,b)_i)_{i \in \N}$ is a product of two infinite sequences $(a_i)_{i\in \N}$ and $(b_i)_{i\in \N}$, we know that there are indices $i < j$ with $a_i \leq_A a_j$ and $k < l$ with $b_k \leq_B b_l$. Therefore in every infinite sequence $((a,b)_i)_{i\in \N}$ in $(A\times B, \leq)$ there are elements $(a,b)_{i^*} = (a_i,b_k)$, $(a,b)_{j^*} = (a_j,b_l)$ who have indices $i^* < j^*$ and which fulfil $(a,b)_{i^*} \leq (a,b)_{j^*}$.
+For every infinite sequence $(b_i)_{i\in \N}$ in $B$ there are indices $k < l$ with $b_k \leq_B b_l$. \\
+Assume, there is an infinite sequence $((a,b)_i)_{i \in \N}$ whithout indices $i^*,j^*$ with $i^* < j^*$ and $(a,b)_{i^*} \leq (a,b)_{j^*}$. 
+Since the infinite sequence $((a,b)_i)_{i \in \N}$ can be split into is two infinite sequences $(a_i)_{i\in \N}$ and $(b_i)_{i\in \N}$, we know that there are indices $i < j$ with $a_i \leq_A a_j$ and $k < l$ with $b_k \leq_B b_l$. Therefore there must be elements $(a,b)_{i^*} = (a_i,b_k)$, $(a,b)_{j^*} = (a_j,b_l)$ who have indices $i^* < j^*$ and which fulfil $(a,b)_{i^*} \leq (a,b)_{j^*}$.
 
 Since the product of two wqo is also a wqo and $(\N,\leq)$ is obviously an wqo, the product of $d \in \N$ well-quasi orderings $(\N^d,\leq_d)$ is a well-quasi ordering too.   
 \end{proof}
