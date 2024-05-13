@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{scrartcl}
+\documentclass[a4paper,11pt]{article}
 
 % Layout
 \usepackage[a4paper, left=2.5cm, right=2cm, top=1cm, bottom=3cm]{geometry} % kleinere Ränder
@@ -13,6 +13,7 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{microtype}
 \usepackage{stmaryrd}
 \usepackage{MnSymbol}
@@ -58,9 +59,6 @@
 }{
 \end{tcolorbox}}
 
-\newcommand{\ein}{\textbf{Eingabe: }}
-\newcommand{\reg}{\textbf{Bedingungen:}}
-\newcommand{\aus}{\textbf{Ziel: }}
 
 % Reelle, Natürliche, Ganze, Rationale Zahlen
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
@@ -96,11 +94,10 @@
 % Aufzählungen anpassen (alternativ: \arabic, \alph)
 \renewcommand{\labelenumi}{(\roman{enumi})}
 
-% BITTE NICHT ÄNDERN: interne Kommandos für die Informationen (Blattnummer, Gruppe, ...)
-\newcommand{\printsheet}{?}
-\newcommand{\sheet}[1]{%
-\renewcommand{\printsheet}{#1}%
-}
+% BITTE NICHT ÄNDERN: interne Kommandos für die Informationen
+\newcounter{sheet}
+\newcommand{\printsheet}{\arabic{sheet}}
+
 
 \newcommand{\printgroup}{?}
 \newcommand{\group}[1]{%
@@ -109,6 +106,8 @@
 
 \newcommand{\printmembers}{}
 \newcommand{\printmember}[3]{{#2} {#3} & {#1} \\}
+
+\newtheorem{proposition}{Proposition}[sheet]
 
 % Für Vektoren
 \newcommand{\myvec}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
@@ -130,11 +129,11 @@
 }}
 
 % <-------- HIER alle Informationen eintragen ========================
-\sheet{X} % Nummer des Blatts
+\setcounter{sheet}{X} % Nummer des Blatts
 
 % alle Gruppenmitglieder in der Form \member{Matrikelnummer}{Vorname}{Nachname}
 \member{5481114}{Danje}{Petersen}
-\member{1234567}{X}{Y}
+\member{5174511}{Marc}{Majohr}
 
 \begin{document}
 
