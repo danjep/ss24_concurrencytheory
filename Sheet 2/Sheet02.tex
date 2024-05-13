@@ -188,11 +188,34 @@ Dann gibt es einen Zykel $c'$ mit $|c'| = n$ bei dem ein Knoten $v*$ aus $c$ ein
 \section*{Aufgabe \printsheet.3}
 \subsection*{(a)}
 \begin{align*}
-Char(W) &=& Char(G_0) \land Char(G_1) \land MARK(W) \\
+Char(W) &=& Char(G_0) \land Char(G_1) \land MARK(G_0.t_7.G_1) \\
 &=& \forall t_i \in W.T x[t_i] \geq 0 \land MARK(G_0) \land KIRCH(G_0) \land IACC(G_0) \\ 
-&&\land  MARK(G_1) \land KIRCH(G_1) \land IACC(G_1) \land MARK(G_0.t_7.G_1)
+&\land&  MARK(G_1) \land KIRCH(G_1) \land IACC(G_1) \land MARK(G_0.t_7.G_1)
 \end{align*}
-
+Kirchhoffgleichung ist immer wahr, da $x[t_i] - x[t_i] = 0$.
+\begin{align*}
+MARK(G_0) &= x[G_0,in,1] - x[G_0,out,1] = 0 \\ 
+&\land x[G_0,in,2] - x[G_0,out,2] = 0 \\
+& \land x[G_0,in,3] + 2x[t_0] - x[G_0,out,3] = 0
+\end{align*}
+\begin{align*}
+IACC(G_0) &= 0 \leq_\omega x[G_0,in] \leq_\omega \myvec{0&0&0} \\
+&\land 0 \leq_\omega x[G_0,out] \leq_\omega \myvec{0&0&\omega}
+\end{align*}
+\begin{align*}
+MARK(G_1) &= x[G_1,in,1] - x[t_2] - x[t_3] + x[t_4] + 2 x[t_5] - x[G_1,out,1] = 0 \\ 
+&\land x[G_1,in,2] + 2x[t_1] + 2x[t_4] - 7x[t_5] - x[t_6] - x[G_1,out,2] = 0 \\
+& \land x[G_1,in,3] - 6x[t_4] - x[G_1,out,3] = 0
+\end{align*}
+\begin{align*}
+IACC(G_0) &= 0 \leq_\omega x[G_1,in] \leq_\omega \myvec{0&0&\omega} \\
+&\land 0 \leq_\omega x[G_1,out] \leq_\omega \myvec{0&1&0}
+\end{align*}
+\begin{align*}
+MARK(G_0.t_7.G_1) &= x[G_0,in,1] - x[G_1,out,1] = 0 \\ 
+&\land x[G_0,in,2] - x[G_1,out,2] = 0 \\
+& \land x[G_0,in,3] - 2x[t_7] - x[G_1,out,3] = 0
+\end{align*}
 
 \subsection*{(b)}
 
