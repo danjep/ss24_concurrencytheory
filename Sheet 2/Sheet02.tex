@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 
 % Layout
-\usepackage[a4paper, left=2.5cm, right=2cm, top=1.5cm, bottom=3cm]{geometry} % kleinere Ränder
+\usepackage[a4paper, left=2cm, right=2cm, top=1.5cm, bottom=3cm]{geometry} % kleinere Ränder
 \usepackage{parskip}
 
 % Umlaute in der Datei erlauben, auf Deutsch umstellen
@@ -156,33 +156,31 @@
 % <-------- HIER beginnt die Lösung ========================
 
 \section*{Aufgabe \printsheet.1}
-\begin{proposition} For a directed graph $G=(V;E)$ and a cycle $C$ in G, $\psi(C)$ is a solution of the Kirchhoff equation for $G$, i.e.:
+\begin{proposition} For a directed graph $G=(V;E)$ and a cycle $c$ in G, $\psi(c)$ is a solution of the Kirchhoff equation for $G$, i.e.:
 \[\forall v \in V: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\] \end{proposition}
 \begin{proof}
-Per Induktion über die Länge des Zykels. \\
-
-\textbf{Induktionsanfang:} Sei $|c| = 0$ bzw. $|c| = 1$. \\
+Per Induktion über Anzahl primitiver Zykel in $c$. \\
+\textbf{Induktionsanfang:} Sei $|c| = 0$ oder ein primitiver Zykel. \\
 Für $|c| = 0$ gilt $\forall v \in V: \sum_{e=(v,-)} \psi(e) = \sum_{e=(-,v)} \psi(e) = 0$ und dadurch auch 
 \[\forall v \in V: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\]
-Für $|c| = 1$ gilt, dass der Start- bzw. Endknoten $v_c$ eine Kante $e=(-,v)$ zu sich hat und eine Kante $e'=(v,-)$ von sich weg, die in diesem Falle die selbe Kante sind. Somit gilt allerdings:
-\[\forall v \in V \setminus \{v_c\}: \sum_{e=(v,-)} \psi(e) = \sum_{e=(-,v)} \psi(e) = 0\] und \[\sum_{e=(v_c,-)} \psi(e) = \sum_{e=(-,v_c)} \psi(e) = 1\] und somit:
+Für $c =$ primitiver Zykel gilt, dass jeder Knoten höchstens einmal besucht wird. Dafür wird eine eingehende und eine ausgehende Kante benötigt. Somit gilt für jeden Knoten in $c$:
+\[\forall v \in c: \sum_{e=(-,v)} \psi(e) = \sum_{e=(v,-)} \psi(e) = 1\]
+und somit:
 \[\forall v \in V: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 1-1 = 0\]
 
-\textbf{Induktionsschritt:} Sei $|c| = n+1$. \\
-Dann gibt es einen Zykel $c'$ mit $|c'| = n$ bei dem ein Knoten $v*$ aus $c$ einmal ausgelassen wird und somit die Kanten $(v_1,v*)$ und $(v*,v_2)$ nicht berücksichtigt werden.
-
-\[\forall v \in V: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0 \Leftrightarrow  \sum_{e=(-,v), v \in V} \psi(e) - \sum_{e=(v,-), v \in V} \psi(e)  = 0\]
-
+\textbf{Induktionsschritt:} Sei $c$ ein Zykel, der sich in $n+1$ primitive Zykel $c_1,...,c_n,c_{n+1}$ aufteilen lässt. \\
+Somit gilt:
 \begin{align*}
-\sum_{e=(-,v), v \in V} \psi(e) - \sum_{e=(v,-), v \in V} \psi(e) &= \sum_{e=(-,v), v \in c'} \psi(e) - \sum_{e=(v,-), v \in c'} \psi(e) + 1 - 1 \\
-&\overset{IV}{=} 0 + 1 - 1 = 0
+&\forall v \in V: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\\
+&\Leftrightarrow \forall v \in c: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0 \\
+&\Leftrightarrow \forall c_i \in \{c_1,\dots c_{n+1}\}: \forall v \in c_i: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\\
+&\overset{IV}{\Leftrightarrow} \forall v \in c_{n+1}: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\\
+&\Leftrightarrow 1 - 1 =  0
 \end{align*}
 \end{proof}
 
-
-
 \section*{Aufgabe \printsheet.2}
-
+\includegraphics[scale=0.65]{2}
 
 
 \section*{Aufgabe \printsheet.3}
@@ -192,7 +190,7 @@ Char(W) &=& Char(G_0) \land Char(G_1) \land MARK(G_0.t_7.G_1) \\
 &=& \forall t_i \in W.T x[t_i] \geq 0 \land MARK(G_0) \land KIRCH(G_0) \land IACC(G_0) \\ 
 &\land&  MARK(G_1) \land KIRCH(G_1) \land IACC(G_1) \land MARK(G_0.t_7.G_1)
 \end{align*}
-Kirchhoffgleichung ist immer wahr, da $x[t_i] - x[t_i] = 0$.
+Kirchhoffgleichung von $G_0$ ist immer wahr, da $x[t_0] - x[t_0] = 0$.
 \begin{align*}
 MARK(G_0) &= x[G_0,in,1] - x[G_0,out,1] = 0 \\ 
 &\land x[G_0,in,2] - x[G_0,out,2] = 0 \\
@@ -208,6 +206,11 @@ MARK(G_1) &= x[G_1,in,1] - x[t_2] - x[t_3] + x[t_4] + 2 x[t_5] - x[G_1,out,1] = 
 & \land x[G_1,in,3] - 6x[t_4] - x[G_1,out,3] = 0
 \end{align*}
 \begin{align*}
+KIRCH(G_1) &= x[t_6] + x[t_3] - x[t_5] - x[t_4] - x[t_6] = 0 \\
+&\land x[t_2] + x[t_4] - x[t_3] = 0 \\
+&\land x[t_5] + x[t_1] - x[t_1] - x[t_2] = 0
+\end{align*}
+\begin{align*}
 IACC(G_0) &= 0 \leq_\omega x[G_1,in] \leq_\omega \myvec{0&0&\omega} \\
 &\land 0 \leq_\omega x[G_1,out] \leq_\omega \myvec{0&1&0}
 \end{align*}
@@ -218,15 +221,34 @@ MARK(G_0.t_7.G_1) &= x[G_0,in,1] - x[G_1,out,1] = 0 \\
 \end{align*}
 
 \subsection*{(b)}
+$G_0:$ \\
+Up-pumping sequence $\sigma_1 = t_0$
 
+Down-pumping sequence $\sigma_2 = \varepsilon$
+
+\includegraphics[scale=0.6]{3b0.jpg}
+
+
+$G_1:$ \\
+Up-pumping sequence $\sigma_3 = t_4.t_3$
+
+Down-pumping sequence $\sigma_4 = t_6$
+
+\includegraphics[scale=0.57]{3b1}
 
 \subsection*{(c)}
-\[s_h = (t_0)^4.t_7.t_4.t_3.t_5.(t_1)^3.t_2.t_3.t_6\]
+\[s_h = (t_0)^4.t_4.t_3.t_5.(t_1)^3.t_2.t_3.t_6\]
+
+\subsection*{(d)}
+
+
+\subsection*{(e)}
+
 
 
 \section*{Aufgabe \printsheet.4}
-
-
+\includegraphics[scale=0.6]{4a}
+\includegraphics[scale=0.6]{4b}
 
 
 
