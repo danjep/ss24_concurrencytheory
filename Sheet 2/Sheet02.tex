@@ -169,13 +169,12 @@ und somit:
 \[\forall v \in V: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 1-1 = 0\]
 
 \textbf{Induktionsschritt:} Sei $c$ ein Zykel, der sich in $n+1$ primitive Zykel $c_1,...,c_n,c_{n+1}$ aufteilen lässt. \\
-Somit gilt:
+Somit gilt:\\
+Die Kirchhoff-Gleichung gilt für jeden Subzykel von $c$, der sich in $n$ primitive Zykel aufteilen lässt. Sei $\psi'$ das Parikh-Bild von nur dem übrigen primitiven Zykel $c_{n+1}$ auf $G$. Dann gilt: \\
 \begin{align*}
 &\forall v \in V: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\\
-&\Leftrightarrow \forall v \in c: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0 \\
-&\Leftrightarrow \forall c_i \in \{c_1,\dots c_{n+1}\}: \forall v \in c_i: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\\
-&\overset{IV}{\Leftrightarrow} \forall v \in c_{n+1}: \sum_{e=(-,v)} \psi(e) - \sum_{e=(v,-)} \psi(e) = 0\\
-&\Leftrightarrow 1 - 1 =  0
+\overset{IV}{\Leftrightarrow}& \forall v \in c_{n+1}: \sum_{e=(-,v)} \psi'(e) - \sum_{e=(v,-)} \psi'(e) = 0 \\
+\Leftrightarrow & 1 - 1 =  0
 \end{align*}
 \end{proof}
 
@@ -236,10 +235,7 @@ Down-pumping sequence $\sigma_4 = t_6$
 
 \includegraphics[scale=0.57]{3b1}
 
-\subsection*{(c)}
-\[s_h = (t_0)^4.t_4.t_3.t_5.(t_1)^3.t_2.t_3.t_6\]
-
-\subsection*{(d)}
+\includegraphics[scale=0.8]{3cd}
 
 
 \subsection*{(e)}
@@ -247,8 +243,8 @@ Down-pumping sequence $\sigma_4 = t_6$
 
 
 \section*{Aufgabe \printsheet.4}
-\includegraphics[scale=0.6]{4a}
-\includegraphics[scale=0.6]{4b}
+\includegraphics[scale=0.8]{4a} \\
+\includegraphics[scale=0.8]{4b}
 
 
 
