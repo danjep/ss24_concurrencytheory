@@ -1,0 +1,150 @@
+\documentclass[a4paper,12pt]{article}
+
+% Layout
+\usepackage[a4paper, left=2.5cm, right=2cm, top=1cm, bottom=3cm]{geometry} % kleinere Ränder
+\usepackage{parskip}
+
+\usepackage{fontspec}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+% Mathesymbole und Ähnliches
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{bussproofs}		% Sequenzenkalkül
+\usepackage{xcolor}
+
+% Grafiken und PDFs einfügen
+\usepackage{pdfpages}
+\usepackage{float}
+
+% PDF-Tools
+\usepackage[hidelinks, unicode]{hyperref}
+
+% Abbildungen
+\usepackage{tikz}
+\usetikzlibrary{arrows,calc,positioning}
+\tikzset{ 
+   state/.style={circle,fill,inner sep=2pt,label=below:#1\strut},
+   arrow/.style={->, shorten <=3pt, shorten >=3pt, >=stealth',thick},
+   knoten/.style={draw, circle, minimum size=8mm}} 
+   
+
+% Reelle, Natürliche, Ganze, Rationale Zahlen
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\B}{\ensuremath{\mathbb{B}}}
+\newcommand{\F}{\ensuremath{\mathbb{F}}}
+
+
+% Körper
+\newcommand{\K}{\ensuremath{\mathcal{K}}}
+%\newcommand{\G}{\ensuremath{\mathcal{G}}}
+
+% Makros für logische Operatoren
+\newcommand{\xor}{\ensuremath{\oplus}} % exklusives oder
+\newcommand{\impl}{\ensuremath{\rightarrow}} % logische Implikation
+\newcommand{\Lor}{\ensuremath{\bigvee}}
+\newcommand{\Land}{\ensuremath{\bigwedge}}
+
+% Meistens ist \varphi schöner als \phi, genauso bei \theta
+\renewcommand{\phi}{\varphi}
+\renewcommand{\theta}{\vartheta}
+
+\newcommand*{\todo}{\textbf{\textcolor{red}{TODO}}}		% big, red, apparent TODO
+
+% SEQUENZENKALKÜL
+\newcommand{\yields}{\ensuremath{\mathrel{\Rightarrow}}}
+
+% Aufzählungen anpassen (alternativ: \arabic, \alph)
+\renewcommand{\labelenumi}{(\roman{enumi})}
+
+% BITTE NICHT ÄNDERN: interne Kommandos für die Informationen (Blattnummer, Gruppe, ...)
+\newcounter{sheet}
+\newcommand{\printsheet}{\arabic{sheet}}
+
+
+\newcommand{\printgroup}{?}
+\newcommand{\group}[1]{%
+\renewcommand{\printgroup}{#1}%
+}
+
+\newcommand{\printmembers}{}
+\newcommand{\printmember}[3]{{#2} {#3} & {#1} \\}
+
+\newtheorem{proposition}{Proposition}[sheet]
+
+% Für Vektoren
+\newcommand{\myvec}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
+\def\spvec#1{\left(\vcenter{\halign{\hfil$##$\hfil\cr \spvecA#1;;}}\right)}
+\def\spvecA#1;{\if;#1;\else #1\cr \expandafter \spvecA \fi}
+
+\newcommand{\pdfmembers}{}
+\newcommand{\pdfmember}[3]{{#1} {#3}, {#2}; }
+
+\newcommand{\member}[3]{%
+\expandafter\renewcommand\expandafter\printmembers\expandafter{\printmembers\printmember{#1}{#2}{#3}}%
+\expandafter\renewcommand\expandafter\pdfmembers\expandafter{\pdfmembers\pdfmember{#1}{#2}{#3}}%
+}
+
+\AtBeginDocument{\hypersetup{
+    pdftitle = {Sheet \printsheet},
+    pdfauthor = {Group \printgroup: \pdfmembers},
+    pdfsubject = {Concurrency Theory}
+}}
+
+% <-------- HIER alle Informationen eintragen ========================
+\setcounter{sheet}{3} % Nummer des Blatts
+
+% alle Gruppenmitglieder in der Form \member{Matrikelnummer}{Vorname}{Nachname}
+\member{5481114}{Danje}{Petersen}
+\member{5174511}{Marc}{Majohr}
+
+\begin{document}
+
+% Kopfzeile
+{\raggedright
+\begin{tabular}{l}
+    Concurrency Theory \\
+    SS 2024 \\
+    \today{} \\
+\end{tabular}}
+\hfill
+{\Large Sheet 0\printsheet}
+\hfill
+\begin{tabular}{l l}
+\printmembers
+\end{tabular}
+\hrule
+
+
+% <-------- HIER beginnt die Lösung ========================
+
+\section*{Aufgabe \printsheet.1} \setcounter{section}{1}
+\includegraphics[scale=0.25]{1}
+\section*{Aufgabe \printsheet.2}
+As $a ^ {10}$ reaches  $\myvec{1&0&10&0}^T$ from $M_0=\myvec{1&0&0&0}^T$, 10 is an upper bound for the length of the shortest 3-bounded $\land$ 3-covering sequence in $(M_0,N)$.
+Furthermore counter 3 is only supplied by a, therefore to achieve an increment of 10, a has to be fired at least 10 times. Therefore $|\sigma| = 10 $ is also a lower bound, thus
+\textbf{m(3,M\textsubscript{0})=10}\\
+Though induction (trivial) the following can be shown, where $op_3$ describes the restriction of an operation to the first 3 elements.\\
+$\forall M_x,M_y\in \mathbb{Z}^S ,\sigma \ \in T^S  : (M_x \leq_3 M_y) \implies  (M_x[\sigma]_3 \implies M_y[\sigma]_3)$\\
+Therefore the set of 3-bounded and 3-covering words for a Marking $M_x \leq M_y$ is a subset of the 3-bounded 3-covering words for $M_y$.
+Therefore $m(3,M_x) \geq m(3,M_y)$.
+As a result we only have to account for the set of smallest feasible markings (which achieve cover).
+We see that (0,0,0,0) is not a viable candidate, we try m(3,(1,0,0,0)) = 10.
+ The next viable candidate (after (0,1,0,0),(0,0,1,0),(0,0,0,1) which allows firing a transition is (0,1,1,1) but that immediatly results in a lower marking (0,1,0,0) which achieves no paths. \textbf{ f(3)=10}.
+
+
+
+
+
+
+
+
+
+\end{document}
