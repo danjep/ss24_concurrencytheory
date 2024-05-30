@@ -51,6 +51,8 @@
 \newcommand{\impl}{\ensuremath{\rightarrow}} % logische Implikation
 \newcommand{\Lor}{\ensuremath{\bigvee}}
 \newcommand{\Land}{\ensuremath{\bigwedge}}
+\newcommand{\Eq}{\ensuremath{\Leftrightarrow}}
+\newcommand{\mal}{\ensuremath{\cdot}}
 
 % Meistens ist \varphi schöner als \phi, genauso bei \theta
 \renewcommand{\phi}{\varphi}
@@ -139,6 +141,19 @@ As a result we only have to account for the set of smallest feasible markings (w
 We see that (0,0,0,0) is not a viable candidate, we try m(3,(1,0,0,0)) = 10.
  The next viable candidate (after (0,1,0,0),(0,0,1,0),(0,0,0,1) which allows firing a transition is (0,1,1,1) but that immediatly results in a lower marking (0,1,0,0) which achieves no paths. \textbf{ f(3)=10}.
 
+\section*{Aufgabe \printsheet.3}
+\subsection*{(a)}
+\begin{proposition} Let $N=(S,T,W,M_0)$ be a Petri net with $M_0 \in \N^n$ as the initial marking. $N$ is unbounded $\Eq$ $\exists \sigma_1,\sigma_2 \in T^*: M_0 \left[ \sigma_1 \right\rangle M_1 [ \sigma_2 \rangle M_2$ and $M_1 < M_2$. \end{proposition}
+\begin{proof}
+We show equality by showing implication in both directions.
+\begin{itemize}
+\item[$\Leftarrow$:] Assume, $\exists \sigma_1,\sigma_2 \in T^*: M_0 \left[ \sigma_1 \right\rangle M_1 [ \sigma_2 \rangle M_2 \land M_1 < M_2$ and $N$ is bounded. In this case, the set of reachable markings is finite and there must be markings $M_s$ for each place $s\in S$ in which the place has the most tokens compared to the other markings.\\ 
+Let $k$ be a place in which $M_2$ has more tokens than $M_1$. Such a place must exist since $M_1 < M_2$. Since $\sigma_2$ has the effect of increasing the number of tokens at place $k$ and not decreasing the number of tokens at any other place, $\sigma_2$ can be  fired infinitely often, thus increasing the number of tokens arbitrarily. This contradicts the existence of $M_k$.
+\item[$\Rightarrow$:] Assume $N$ is unbounded. The set of reachable markings must therefore be infinite. Since it was proven on Sheet 01 that a set of tuples of natural numbers is a well-quasi ordering we can assume that there must be markings $M_1$ and $M_2$ with $M_1 \leq M_2$. Since in the set of reachable markings, these markings are unique, $M_1 \neq M_2$ holds and therefore $M_1 < M_2$. Since these markings are in the set of reachable markings it is obvious that $\sigma_1$ and $\sigma_2$ as defined before must exist.
+\end{itemize}
+\end{proof} 
+
+\subsection*{(b)}
 
 
 \section*{Aufgabe \printsheet.4} 
