@@ -201,6 +201,18 @@ Since A is finite and therefore has finitely many states, the number of differen
 
 
 \subsection*{(b)}
+\begin{proposition} For all $w \in \Sigma^*: [w]_{\sim_A}$ is a regular language. \end{proposition}
+\begin{proof}
+First, we show that $L_{q,q'} = \{w \in \Sigma^*: q \overset{w}{\to} q'\}$ is a regular language. We use the following properties of regular languages: 
+\begin{itemize}
+\item[(1)] regular languages are closed under concatenation.
+\item[(2)] regular languages are closed under union.
+\end{itemize}
+The language of a single character $v \in \Sigma$ is regular. Using (1), we know that for every $w \in \Sigma^*$ with $q \overset{w}{\to} q'$, $\{w\}$ is regular. \\
+Using (2), we know that $L_{q,q'} = \bigcup_{w \in \Sigma^*: q \overset{w}{\to} q'}$ must be regular. \\
+We can now use (2) again, to prove that $[w]_{\sim_A}$ must be regular, since
+\[[w]_{\sim_A} = \bigcup_{q \in Q: q \overset{w}{\to} q'} L_{q,q'}\]
+\end{proof}
 
 
 \section*{Exercise \printsheet.4}
