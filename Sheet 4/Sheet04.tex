@@ -7,7 +7,7 @@
 % Umlaute in der Datei erlauben, auf Deutsch umstellen
 \usepackage{fontspec}
 \usepackage{lmodern}
-\usepackage[english, ngerman]{babel}
+\usepackage[english]{babel}
 
 % Mathesymbole und Ähnliches
 \usepackage{amsmath}
@@ -80,6 +80,7 @@
 \newcommand{\impl}{\ensuremath{\rightarrow}} % logische Implikation
 \newcommand{\Lor}{\ensuremath{\bigvee}}
 \newcommand{\Land}{\ensuremath{\bigwedge}}
+\renewcommand{\to}{\longrightarrow}
 
 % Meistens ist \varphi schöner als \phi, genauso bei \theta
 \renewcommand{\phi}{\varphi}
@@ -140,12 +141,12 @@
 % Kopfzeile
 {\raggedright
 \begin{tabular}{l}
-    Concurrency Theory \\
-    SS 2024 \\
+    Concurrency Theory 
+    (SS 2024) \\
     \today{} \\
 \end{tabular}}
 \hfill
-{\Large Übung 0\printsheet}
+{\Large Sheet 0\printsheet}
 \hfill
 \begin{tabular}{l l}
 \printmembers
@@ -155,19 +156,54 @@
 
 % <-------- HIER beginnt die Lösung ========================
 
-\section*{Aufgabe \printsheet.1}
+\section*{Exercise \printsheet.1}
 
 
 
-\section*{Aufgabe \printsheet.2}
+\section*{Exercise \printsheet.2}
 
 
 
-\section*{Aufgabe \printsheet.3}
+\section*{Exercise \printsheet.3}
+\subsection*{(a)}
+Definition: $\sim_A \subseteq \Sigma^* \times \Sigma^*: v \sim_A w $ if $\forall q,q' \in Q: q \overset{v}{\to} q' \Leftrightarrow q \overset{w}{\to} q'$ \\
+
+\begin{proposition}
+$\sim_A$ is an equivalence relation.
+\end{proposition}
+\begin{proof} The attributes of an equivalence relation are reflexivity, symmetry and transitivity. \\
+\subsubsection*{(i) Reflexivity}
+\[\forall q,q' \in Q: q \overset{v}{\rightarrow} q' \Leftrightarrow q \overset{v}{\to} q' \to v \sim_A v\]
+
+\subsubsection*{(ii) Symmetry}
+\begin{align*}
+v \sim_A w &\Rightarrow \forall q,q' \in Q: q \overset{v}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
+&\Leftrightarrow \forall q,q' \in Q: q \overset{w}{\to} q' \Leftrightarrow  q \overset{v}{\to} q' \\
+& \Rightarrow w \sim_A v
+\end{align*}
+
+\subsubsection*{(iii) Transitivity}
+\begin{align*}
+u \sim_A v \land v \sim_a w &\Rightarrow \forall q,q' \in Q: q \overset{u}{\to} q \Leftrightarrow  q \overset{v}{\to} q'  \land \forall q,q' \in Q: q \overset{v}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
+& \Leftrightarrow \forall q,q' \in Q: q \overset{v}{\to} q' \Leftrightarrow q \overset{v}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
+& \Rightarrow \forall q,q' \in Q: q \overset{u}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
+& \Rightarrow u \sim_A w
+\end{align*}
+\end{proof}
+
+\begin{proposition}
+$\sim_A$ has finitely many equivalence classes.
+\end{proposition}
+\begin{proof}
+Assume, there are infinitely many equivalence classes $[v_1]_{\sim_A},[v_2]_{\sim_A},\dots$, then there must be infinitely many different edges $q_i \overset{v_i}{\to} q_i', i = 1,2,\dots$.
+Since A is finite and therefore has finitely many states, the number of different edges is limited by $|Q|^2$. This is a contradiction.
+\end{proof}
 
 
+\subsection*{(b)}
 
-\section*{Aufgabe \printsheet.4}
+
+\section*{Exercise \printsheet.4}
 \includegraphics[scale=0.15]{4a}
 \pagebreak
 \subsection*{(b)}
