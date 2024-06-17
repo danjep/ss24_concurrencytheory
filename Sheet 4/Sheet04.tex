@@ -195,21 +195,25 @@ $\sim_A$ has finitely many equivalence classes.
 \end{proposition}
 \begin{proof}
 Assume, there are infinitely many equivalence classes $[v_1]_{\sim_A},[v_2]_{\sim_A},\dots$, then there must be infinitely many different edges $q_i \overset{v_i}{\to} q_i', i = 1,2,\dots$.
-Since A is finite and therefore has finitely many states, the number of different edges is limited by $|Q|^2$. This is a contradiction.
+Since A is finite and therefore has finitely many states, the number of different combinations of states is limited. Since each equivalence class is defined through having a unique set of combinations of states, the number of equivalence classes must be limited too.
 \end{proof}
 
 
 \subsection*{(b)}
 \begin{proposition} For all $w \in \Sigma^*: [w]_{\sim_A}$ is a regular language. \end{proposition}
 \begin{proof}
-First, we show that $L_{q,q'} = \{w \in \Sigma^*: q \overset{w}{\to} q'\}$ is a regular language. We use the following properties of regular languages: 
-\begin{itemize}
-\item[(1)] regular languages are closed under concatenation.
-\item[(2)] regular languages are closed under union.
-\end{itemize}
-The language of a single character $v \in \Sigma$ is regular. Using (1), we know that for every $w \in \Sigma^*$ with $q \overset{w}{\to} q'$, $\{w\}$ is regular. \\
-Using (2), we know that $L_{q,q'} = \bigcup_{w \in \Sigma^*: q \overset{w}{\to} q'}$ must be regular. \\
-We can now use (2) again, to prove that $[w]_{\sim_A}$ must be regular, since
+First, we show that $L_{q,q'} = \{w \in \Sigma^*: q \overset{w}{\to} q'\}$ is a regular language. 
+%We use the following properties of regular languages: 
+%\begin{itemize}
+%\item[(1)] regular languages are closed under concatenation.
+%\item[(2)] regular languages are closed under union.
+%\end{itemize}
+%The language of a single character $v \in \Sigma$ is regular. Using (1), we know that for every $w \in \Sigma^*$ with $q \overset{w}{\to} q'$, $\{w\}$ is regular. \\
+%Using (2), we know that $L_{q,q'} = \bigcup_{w \in \Sigma^*: q \overset{w}{\to} q'}$ must be regular. \\
+
+For each pair of states $q,q' \in Q$ we can define a NFA $A' = (Q,\Sigma,q,\delta,\{q'\})$ that accepts $L_{q,q'}$.
+
+We can now use that regular languages are closed under union to prove that $[w]_{\sim_A}$ must be regular, since
 \[[w]_{\sim_A} = \bigcup_{q \in Q: q \overset{w}{\to} q'} L_{q,q'}\]
 \end{proof}
 
