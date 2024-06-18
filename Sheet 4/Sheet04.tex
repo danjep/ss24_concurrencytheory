@@ -184,7 +184,7 @@ v \sim_A w &\Rightarrow \forall q,q' \in Q: q \overset{v}{\to} q' \Leftrightarro
 \subsubsection*{(iii) Transitivity}
 \begin{align*}
 u \sim_A v \land v \sim_a w &\Rightarrow \forall q,q' \in Q: q \overset{u}{\to} q \Leftrightarrow  q \overset{v}{\to} q'  \land \forall q,q' \in Q: q \overset{v}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
-& \Rightarrow \forall q,q' \in Q: q \overset{u}{\to} q' \Leftrightarrow q \overset{v}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
+& \Rightarrow \forall q,q' \in Q: q \overset{v}{\to} q' \Leftrightarrow q \overset{v}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
 & \Rightarrow \forall q,q' \in Q: q \overset{u}{\to} q' \Leftrightarrow  q \overset{w}{\to} q' \\
 & \Rightarrow u \sim_A w
 \end{align*}
@@ -194,7 +194,7 @@ u \sim_A v \land v \sim_a w &\Rightarrow \forall q,q' \in Q: q \overset{u}{\to} 
 $\sim_A$ has finitely many equivalence classes.
 \end{proposition}
 \begin{proof}
-Assume, there are infinitely many equivalence classes $[v_1]_{\sim_A},[v_2]_{\sim_A},\dots$, then there must be infinitely many different edges $q_i \overset{v_i}{\to} q_i', i = 1,2,\dots$.
+Assume, there are infinitely many equivalence classes $[v_1]_{\sim_A},[v_2]_{\sim_A},\dots$, then there must be infinitely many different states $q_i \in Q$. The reason is that each equivalence class $[v]_{\sim_A}$ is defined essentially by combinations $(q_i,q_j),(q_k,q_l),\dots \subseteq Q\times Q$ of states for which $q_i \overset{v}{\to} q_j$ holds. Therefore there must be infinitely many combinations of states to define these classes. \\  
 Since A is finite and therefore has finitely many states, the number of different combinations of states is limited. Since each equivalence class is defined through having a unique set of combinations of states, the number of equivalence classes must be limited too.
 \end{proof}
 
